@@ -1,0 +1,20 @@
+info:
+  version: docker
+
+spring:
+  kafka:
+    bootstrap-servers: place-kafka1:9092,place-kafka1:9092
+    consumer:
+      group-id: place-backend
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.alexburchak.place.backend.serialization.PixelJsonDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.ByteBufferSerializer
+    template:
+      default-topic: batch
+
+backend:
+  consumer-topic: pixel
+  producer-buffer-size: 10
+  batch-flush-period: 1000

@@ -1,0 +1,6 @@
+rootProject.name = 'place'
+
+include 'place-common'
+include 'place-backend'
+include 'place-frontend'
+include 'place-tool'

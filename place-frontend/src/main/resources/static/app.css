@@ -1,0 +1,74 @@
+html, body, #app {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #eee;
+}
+
+/**
+ * Common
+ */
+.flexbox {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.flexbox > canvas {
+    box-shadow: 0 0 .25em rgba(0, 0, 0, .5);
+    image-rendering: pixelated;
+}
+
+.flexbox > .palette {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    flex-wrap: wrap;
+}
+
+.flexbox > .palette > div {
+    cursor: pointer;
+    z-index: 1;
+}
+
+.flexbox > .palette > div.selected {
+    cursor: default;
+    box-shadow: 0 0 5px 5px rgba(25, 135, 175, .9);
+    z-index: 2;
+}
+
+/**
+ * Portrait
+ */
+.flexbox.portrait {
+    flex-direction: column;
+}
+
+.flexbox.portrait > .palette {
+    width: 100%;
+    flex-direction: row;
+}
+
+.flexbox.portrait > .palette > div {
+    height: 3em;
+    width: 12.5%;
+}
+
+/**
+ * Landscape
+ */
+.flexbox.landscape {
+    flex-direction: row;
+}
+
+.flexbox.landscape > .palette {
+    height: 100%;
+    flex-direction: column;
+    flex-wrap: wrap-reverse;
+}
+
+.flexbox.landscape > .palette > div {
+    height: 12.5%;
+    width: 3em;
+}

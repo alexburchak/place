@@ -1,0 +1,48 @@
+server:
+  port: 8080
+  contextPath: /place
+
+info:
+  version: docker
+
+endpoints:
+  shutdown:
+    enabled: true
+    sensitive: true
+
+security:
+  user:
+    name: user
+    password: password
+  basic:
+    path: /mgmt/**
+  require-ssl: false
+
+management:
+  context-path: /mgmt
+  security:
+    enabled: true
+
+spring:
+  devtools:
+    restart:
+      enabled: true
+    livereload:
+      enabled: true
+  session:
+    store-type: none
+  kafka:
+    bootstrap-servers: place-kafka1:9092,place-kafka1:9092
+    consumer:
+      group-id: place-frontend
+      auto-commit-interval: 100
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.ByteBufferDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    template:
+      default-topic: pixel
+
+frontend:
+  consumer-topic: batch

@@ -1,0 +1,70 @@
+version: '2'
+
+services:
+  place-frontend:
+    image: place-frontend
+    build: place-frontend/
+    hostname: place-frontend
+    container_name: place-frontend
+    ports:
+      - "8080:8080"
+    links:
+      - place-zookeeper
+      - place-kafka1
+      - place-kafka2
+    depends_on:
+      - place-kafka1
+      - place-kafka2
+      - place-backend
+
+  place-backend:
+    image: place-backend
+    build: place-backend/
+    hostname: place-backend
+    container_name: place-backend
+    links:
+      - place-zookeeper
+      - place-kafka1
+      - place-kafka2
+    depends_on:
+      - place-kafka1
+      - place-kafka2
+
+  place-zookeeper:
+    image: wurstmeister/zookeeper
+    hostname: place-zookeeper
+    container_name: place-zookeeper
+    ports:
+      - "12181:2181"
+
+  place-kafka1:
+    image: wurstmeister/kafka
+    hostname: place-kafka1
+    container_name: place-kafka1
+    ports:
+      - "19092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_CREATE_TOPICS: "pixel:10:1,batch:1:1"
+      KAFKA_ZOOKEEPER_CONNECT: place-zookeeper:2181
+      HOSTNAME_COMMAND: 'hostname -i'
+    links:
+      - place-zookeeper
+    depends_on:
+      - place-zookeeper
+
+  place-kafka2:
+    image: wurstmeister/kafka
+    hostname: place-kafka2
+    container_name: place-kafka2
+    ports:
+      - "29092:9092"
+    environment:
+      KAFKA_BROKER_ID: 2
+      KAFKA_ZOOKEEPER_CONNECT: place-zookeeper:2181
+      HOSTNAME_COMMAND: 'hostname -i'
+    links:
+      - place-zookeeper
+    depends_on:
+      - place-zookeeper
+      - place-kafka1

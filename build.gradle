@@ -1,0 +1,32 @@
+apply plugin:'base'
+
+evaluationDependsOnChildren()
+
+task compose(type: Copy) {
+    description = 'Copy compose files'
+    group "Build"
+    dependsOn subprojects.compose
+
+    into("${project.buildDir}")
+    into('compose') {
+        from('compose')
+    }
+    into('compose') {
+        from '.'
+        include 'docker-compose.yml'
+    }
+}
+
+task zip(type: Zip) {
+    description = 'Create zip distribution'
+    group "Build"
+    dependsOn compose
+
+    archiveName = "${project.name}.zip"
+
+    from("${project.buildDir}/compose") {
+        into('/place')
+    }
+}
+
+build.finalizedBy(zip)

@@ -1,0 +1,41 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="cache-control" content="max-age=0" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="expires" content="0" />
+    <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+    <meta http-equiv="pragma" content="no-cache" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no">
+
+    <link type="text/css" rel="stylesheet" href="stylesheet.css"/>
+    <link type="text/css" rel="stylesheet" href="app.css"/>
+
+    <script src="sockjs-0.3.4.js"></script>
+    <script src="https://unpkg.com/vue@2.2.6/dist/vue.js"></script>
+    <script src="https://unpkg.com/jquery@3.2.1/dist/jquery.js"></script>
+
+    <title>Place</title>
+</head>
+
+<body>
+<noscript>
+    <h2 class="warn" th:text="#{message.javascript.disabled}"></h2>
+</noscript>
+
+<div id="app" :class="['flexbox', mode]">
+    <div></div>
+    <canvas ref="canvas" @mouseup="handleClick" width="100" height="100" :style="`transform: scale(${scale})`"></canvas>
+    <div class="palette">
+        <div v-for="color of colors" :key="color" :style="{ backgroundColor: color }" :class="color === selectedColor ? 'selected' : ''" @click="selectColor(color)"></div>
+    </div>
+</div>
+</body>
+
+<script src="app.js"></script>
+
+</html>

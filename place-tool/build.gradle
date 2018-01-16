@@ -1,0 +1,51 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+version = project.file('../version.properties').text.replace('version=', '')
+
+repositories {
+    mavenCentral()
+}
+
+jar {
+    baseName = 'place-tool'
+    archiveName = "place-tool.jar"
+    manifest {
+        attributes 'Implementation-Vendor': 'alexburchak.org',
+                'Implementation-Title': 'Place Frontend',
+                'Implementation-Version': version,
+                'Built-Date': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                'Built-By': System.getProperty('user.name'),
+                'Built-JDK': System.getProperty('java.version'),
+                'Built-Host': InetAddress.getLocalHost().getHostName(),
+                'Main-Class': 'org.alexburchak.place.frontend.DumpImage'
+    }
+}
+
+dependencies {
+    compile project(":place-common")
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.8.10'
+}
+
+jar {
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    exclude('*.jpg', '*.dump')
+}
+
+task compose(type: Copy) {
+    description = 'Copy compose files'
+    group "Build"
+    dependsOn subprojects.compose
+}
+
+build.finalizedBy(compose)
